@@ -1,8 +1,10 @@
 ---
+#Task 1: Fetch certificates from letsencrypt generation host
 - hosts: '{{ letsencrypt_host }}'
   become: yes
+  
   tasks:
-        - name: Creates destination directory
+        - name: Creates local directory to hold certificates
           file: 
             dest='{{ fetch_to_dir }}'
             state=directory 
@@ -10,7 +12,7 @@
             group=root 
             mode=0644
 
-        - name: Fetch stuff from the remote and save to local
+        - name: Fetch live certificates folder from letsencrypt generation host to local
           synchronize:  
             src={{ item }} 
             dest='{{ fetch_to_dir }}' 
@@ -19,6 +21,28 @@
             rsync_path="sudo rsync"
           with_items:
                 - '{{ fetch_from_dir }}'
+                
+#Task 2: Copy certificates from local to remote hosts
+- hosts: ubuntu,xenials,proxmox
+  become: yes
 
+  tasks:
+   - name: Creates destination directory on remote hosts
+     file:
+       path=/etc/letsencrypt/live
+       state=directory
+
+   - name: Copy certificates directory from local to remote hosts
+     copy:
+       src:    '{{ item.src }}'
+       dest:   '{{ item.dest }}'
+       owner:  root
+       group:  root
+       mode:   '{{ item.mode }}'
+       force:  yes
+     with_items:
+      - src: '{{ fetch_from_dir }}' 
+        dest: '{{ fetch_to_dir }}' 
+        mode: '0644'
 
 

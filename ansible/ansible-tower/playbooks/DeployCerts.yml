@@ -18,7 +18,6 @@
             permissions="rwx" 
             state=present
             recursive=yes
-
         - name: Fetch live certificates folder from letsencrypt generation host to local
           synchronize:  
             src={{ item }} 
@@ -28,6 +27,18 @@
             rsync_path="sudo rsync"
           with_items:
                 - '{{ fetch_from_dir }}'
+                
+- hosts: localhost
+  become: yes
+  
+  tasks:
+        - acl: 
+            name=/etc/letsencrypt/live 
+            entity=awx 
+            etype=user 
+            permissions="rwx" 
+            state=present
+            recursive=yes
 
 # Task 2: Copy certificates from local to remote hosts
 - hosts: '{{ remote_hosts }}'

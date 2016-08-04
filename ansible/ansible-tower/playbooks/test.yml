@@ -4,6 +4,7 @@
   tasks:
         - name: Fetch stuff from the remote and save to local
           synchronize:  src={{ item }} dest='{{ fetch_to_dir }}' mode=pull
+            recursive: yes
           with_items:
                 - '{{ fetch_from_dir }}'
-          recursive: yes
+          

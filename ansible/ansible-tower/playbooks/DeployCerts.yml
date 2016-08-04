@@ -24,7 +24,7 @@
             dest='{{ fetch_to_dir }}' 
             mode=pull 
             recursive=yes 
-            perms=no
+            archive=no
             rsync_path="sudo rsync"
           with_items:
                 - '{{ fetch_from_dir }}'

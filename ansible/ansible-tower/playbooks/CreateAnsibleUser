@@ -1,0 +1,23 @@
+---
+- hosts: '{{ remote_hosts }}'
+  become: yes
+  tasks:
+
+  - user: '{{ ubuntu_insert_user }}' 
+
+  - name: Placing key
+    authorized_key: '{{ auth_key }}'
+
+  - lineinfile: '{{ ubuntu_insert_user }}' 
+
+- hosts: '{{ remote_freenas }}'
+  become: yes
+  tasks:
+
+  - user: '{{ freebsd_insert_user }}' 
+
+  - name: Placing key
+    authorized_key: '{{ auth_key }}'
+
+  - lineinfile: '{{ freebsd_insert_user }}' 
+

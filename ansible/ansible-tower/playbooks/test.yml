@@ -6,4 +6,4 @@
           synchronize:  src={{ item }} dest='{{ fetch_to_dir }}' mode=pull
           with_items:
                 - '{{ fetch_from_dir }}'
-          recursive: yes
+            recursive: yes

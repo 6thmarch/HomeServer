@@ -1,5 +1,5 @@
 ---
-#Task 1: Fetch certificates from letsencrypt generation host
+# Task 1: Fetch certificates from letsencrypt generation host
 - hosts: '{{ letsencrypt_host }}'
   become: yes
   
@@ -22,7 +22,7 @@
           with_items:
                 - '{{ fetch_from_dir }}'
                 
-#Task 2: Copy certificates from local to remote hosts
+# Task 2: Copy certificates from local to remote hosts
 - hosts: '{{ remote_hosts }}'
   become: yes
 
@@ -45,15 +45,45 @@
         dest: '{{ fetch_to_dir }}' 
         mode: '0644'
         
-#Task3: Copy certificates to proxmox directory
+# Task 3: Copy certificates to proxmox directory
 - hosts: '{{ proxmox_hosts }}'
   become: yes
 
   tasks:
-  - name: Move and rename privkey.pem to proxmox directory
+  - name: Move and rename privkey to proxmox directory
     command:
        cp '{{ privkey_path }}' '{{ proxmox_privkey_path }}'
 
-  - name: Move and rename fullchain.pem to proxmox directory
+  - name: Move and rename fullchain to proxmox directory
     command:
        cp '{{ fullchain_path }}' '{{ proxmox_fullchain_path }}'
+
+# Task 4: Copy certificates from local to FreeNAS host. Require separate task due to different root group. 
+- hosts: '{{ freenas_hosts }}'
+  become: yes
+
+  tasks:
+   - name: Creates destination directory on FreeNAS
+     file:
+       path='{{ fetch_to_dir }}'
+       state=directory
+
+   - name: Copy fullchain and privkey.pem to remote hosts
+     copy:
+       src:    '{{ item.src }}'
+       dest:   '{{ item.dest }}'
+       owner:  root
+       group:  wheel
+       mode:   '{{ item.mode }}'
+     with_items:
+      - src: '{{ fetch_from_dir }}' 
+        dest: '{{ fetch_to_dir }}' 
+        mode: '0644'
+  
+   - name: Move and rename privkey to FreeNAS certificates directory
+     command:
+        mv '{{ privkey_path }}' '{{ freenas_privkey_path }}'
+
+   - name: Move and rename fullchain to FreeNAS certificates directory
+     command:
+        mv '{{ fullchain_path }}' '{{ freenas_fullchain_path }}'

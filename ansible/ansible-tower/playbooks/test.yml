@@ -2,7 +2,7 @@
 - hosts: '{{ hosts }}'
   become: yes
   tasks:
-        - name: Creates /etc/letsencrypt/live/6thmarch.com directory
+        - name: Creates /etc/letsencrypt/ directory
           file: 
             dest=/etc/letsencrypt/
             state=directory 

@@ -47,7 +47,7 @@
        recursive=yes 
        archive=no
        rsync_path="sudo rsync"
-       with_items:
+    with_items:
      - '{{ fetch_from_dir }}'
 
 # Task 3: Copy certificates to proxmox directory
@@ -75,12 +75,12 @@
 
    - name: Send live certificates folder from local to remote hosts
      synchronize:  
-     src='{{ item }}' 
-     dest='{{ fetch_to_dir }}' 
-     mode=push 
-     recursive=yes 
-     archive=no
-     rsync_path="sudo rsync"
+       src='{{ item }}' 
+       dest='{{ fetch_to_dir }}' 
+       mode=push 
+       recursive=yes 
+       archive=no
+       rsync_path="sudo rsync"
      with_items:
       - '{{ fetch_from_dir }}'
   

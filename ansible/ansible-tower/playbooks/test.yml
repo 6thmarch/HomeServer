@@ -44,5 +44,15 @@
       - src: '{{ fetch_from_dir }}' 
         dest: '{{ fetch_to_dir }}' 
         mode: '0644'
+#Task3: 
+- hosts: '{{ proxmox_hosts }}'
+  become: yes
 
+  tasks:
+  - name: Move and rename privkey.pem to proxmox directory
+    command:
+       cp '{{ original_privkey_path }}' '{{ proxmox_privkey_path }}'
 
+  - name: Move and rename fullchain.pem to proxmox directory
+    command:
+       cp '{{ original_fullchain_path }}' '{{ proxmox_fullchain_path }}'

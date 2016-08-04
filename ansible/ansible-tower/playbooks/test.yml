@@ -2,9 +2,9 @@
 - hosts: '{{ hosts }}'
   become: yes
   tasks:
-        - name: Creates /etc/letsencrypt/ directory
+        - name: Creates destination directory
           file: 
-            dest=/etc/letsencrypt/
+            dest='{{ fetch_from_dir }}'
             state=directory 
             owner=root 
             group=root 

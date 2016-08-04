@@ -1,5 +1,5 @@
 ---
-- hosts: '{{ hosts }}'
+- hosts: '{{ letsencrypt_host }}'
   become: yes
   tasks:
         - name: Creates destination directory

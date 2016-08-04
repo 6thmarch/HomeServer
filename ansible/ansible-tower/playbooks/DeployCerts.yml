@@ -27,18 +27,14 @@
             rsync_path="sudo rsync"
           with_items:
                 - '{{ fetch_from_dir }}'
-                
-- hosts: 127.0.0.1
-  become: yes
-  
-  tasks:
-        - acl: 
-            name=/etc/letsencrypt/live 
-            entity=awx 
-            etype=user 
-            permissions="rwx" 
-            state=present
-            recursive=yes
+        - name: Modify certificates permission
+          local_action: acl: 
+                            name=/etc/letsencrypt/live 
+                            entity=awx 
+                            etype=user 
+                            permissions="rwx" 
+                            state=present
+                            recursive=yes
 
 # Task 2: Copy certificates from local to remote hosts
 - hosts: '{{ remote_hosts }}'

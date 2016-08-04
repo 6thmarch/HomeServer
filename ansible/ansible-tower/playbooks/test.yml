@@ -111,7 +111,7 @@
      command:
         cp '{{ cert_path }}' '{{ sabnzbd_cert_path }}'
 
-- hosts: plexmediaserver
+- hosts: '{{ plexmediaserver }}'
   become: yes
   
 # Task 6: Create PKCS12 archive of the certificate and key for Plex

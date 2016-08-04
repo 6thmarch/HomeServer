@@ -23,7 +23,7 @@
                 - '{{ fetch_from_dir }}'
                 
 #Task 2: Copy certificates from local to remote hosts
-- hosts: ubuntu,xenials,proxmox
+- hosts: '{{ remote_hosts }}'
   become: yes
 
   tasks:

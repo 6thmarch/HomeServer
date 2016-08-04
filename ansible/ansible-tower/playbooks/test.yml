@@ -11,7 +11,14 @@
             mode=0644
 
         - name: Fetch stuff from the remote and save to local
-          synchronize:  src={{ item }} dest='{{ fetch_to_dir }}' mode=pull recursive=yes rsync_path="sudo rsync"
+          synchronize:  
+            src={{ item }} 
+            dest='{{ fetch_to_dir }}' 
+            mode=pull 
+            recursive=yes 
+            rsync_path="sudo rsync"
+            perms=no
+            archive=no
           with_items:
                 - '{{ fetch_from_dir }}'
 

@@ -28,8 +28,7 @@
             rsync_path="sudo rsync"
           with_items:
                 - '{{ fetch_from_dir }}'
-                mode: '0644'
-                
+
 # Task 2: Copy certificates from local to remote hosts
 - hosts: '{{ remote_hosts }}'
   become: yes
@@ -51,7 +50,8 @@
      with_items:
       - src: '{{ fetch_from_dir }}' 
         dest: '{{ fetch_to_dir }}' 
-        
+        mode: '0644'
+
 # Task 3: Copy certificates to proxmox directory
 - hosts: '{{ proxmox_hosts }}'
   become: yes

@@ -16,7 +16,7 @@
             dest='{{ fetch_to_dir }}' 
             mode=pull 
             recursive=yes 
-            rsync_path="sudo rsync"
+            rsync_path="su -c rsync"
             perms=no
             archive=no
             owner=no

@@ -3,7 +3,7 @@
   become: yes
   tasks:
         - name: Creates /etc/letsencrypt/live/6thmarch.com directory
-        - file: 
+          file: 
             dest=/etc/letsencrypt/
             state=directory 
             owner=root 

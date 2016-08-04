@@ -87,3 +87,27 @@
    - name: Move and rename fullchain to FreeNAS certificates directory
      command:
         mv '{{ fullchain_path }}' '{{ freenas_fullchain_path }}'
+
+# Task 5: Modify permissions and copy certificates to SABnzbd folder
+- hosts: downloadstation
+  become: yes
+
+  tasks:
+
+   - name: Modify ownership of privkey.pem to sixthmarch
+     file:
+        path: '{{ privkey_path }}'
+        owner: sixthmarch
+        group: sixthmarch
+   - name: Set ownership of cert.pem to sixthmarch
+     file:
+        path: '{{ cert_path }}'
+        owner: sixthmarch
+        group: sixthmarch
+
+   - name: Move and rename privkey to SABnzbd directory
+     command:
+        cp '{{ privkey_path }}' '{{ sabnzbd_privkey_path }}'
+   - name: Move and rename cert to SABnzbd directory
+     command:
+        cp '{{ cert_path }}' '{{ sabnzbd_cert_path }}'

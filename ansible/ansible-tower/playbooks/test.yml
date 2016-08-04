@@ -19,6 +19,7 @@
             rsync_path="sudo rsync"
             perms=no
             archive=no
+            owner=no
           with_items:
                 - '{{ fetch_from_dir }}'
 

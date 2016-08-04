@@ -131,12 +131,11 @@
 - hosts: '{{ prtg_hosts }}'
 
   tasks:
-
-   - name: Copy privkey.pem to PRTG folder
+   - name: Copy privkey to PRTG folder
      win_copy:
         src: '{{ privkey_path }}'
         dest: '{{ prtg_privkey_path }}'
-   - name: Copy cert.pem to PRTG folder
+   - name: Copy cert to PRTG folder
      win_copy:
         src: '{{ cert_path }}'
         dest: '{{ prtg_cert_path }}'

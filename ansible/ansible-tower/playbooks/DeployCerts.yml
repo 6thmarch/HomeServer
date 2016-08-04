@@ -39,18 +39,16 @@
        path='{{ fetch_to_dir }}'
        state=directory
 
-   - name: Copy certificates directory from local to remote hosts
-     copy:
-       src:    '{{ item.src }}'
-       dest:   '{{ item.dest }}'
-       owner:  root
-       group:  root
-       mode:   '{{ item.mode }}'
-       force:  yes
+   - name: Send live certificates folder from local to remote hosts
+     synchronize:  
+     src={{ item }} 
+     dest='{{ fetch_to_dir }}' 
+     mode=push 
+     recursive=yes 
+     archive=no
+     rsync_path="sudo rsync"
      with_items:
-      - src: '{{ fetch_from_dir }}' 
-        dest: '{{ fetch_to_dir }}' 
-        mode: '0644'
+      - '{{ fetch_from_dir }}'
 
 # Task 3: Copy certificates to proxmox directory
 - hosts: '{{ proxmox_hosts }}'
@@ -75,24 +73,22 @@
        path='{{ fetch_to_dir }}'
        state=directory
 
-   - name: Copy certificates directory to FreeNAS
-     copy:
-       src:    '{{ item.src }}'
-       dest:   '{{ item.dest }}'
-       owner:  root
-       group:  wheel
-       mode:   '{{ item.mode }}'
-       force: yes
+   - name: Send live certificates folder from local to remote hosts
+     synchronize:  
+     src={{ item }} 
+     dest='{{ fetch_to_dir }}' 
+     mode=push 
+     recursive=yes 
+     archive=no
+     rsync_path="sudo rsync"
      with_items:
-      - src: '{{ fetch_from_dir }}' 
-        dest: '{{ fetch_to_dir }}' 
-        mode: '0644'
+      - '{{ fetch_from_dir }}'
   
-   - name: Move and rename privkey to FreeNAS certificates directory
+   - name: Move privkey to FreeNAS certificates directory
      command:
         cp '{{ privkey_path }}' '{{ freenas_privkey_path }}'
 
-   - name: Move and rename fullchain to FreeNAS certificates directory
+   - name: Move fullchain to FreeNAS certificates directory
      command:
         cp '{{ fullchain_path }}' '{{ freenas_fullchain_path }}'
 
@@ -123,7 +119,6 @@
 # Task 6: Create PKCS12 archive of the certificate and key for Plex
 - hosts: '{{ plex_hosts }}'
   become: yes
-  
   tasks:
   - name: Create PKCS12 archive of the certificate and key 
     command:
@@ -137,7 +132,6 @@
 
 # Task 7: Copy certificates to PRTG directory 
 - hosts: '{{ prtg_hosts }}'
-
   tasks:
    - name: Copy privkey to PRTG folder
      win_copy:
@@ -150,7 +144,6 @@
 
 # Task 8: Copy certificates to Ansible Tower directory 
 - hosts: localhost
-
   tasks:
    - name: Copy privkey to Ansible Tower folder
      copy:

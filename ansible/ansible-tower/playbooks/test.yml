@@ -63,8 +63,6 @@
   become: yes
 
   tasks:
-   - pip: name=paramiko state=latest
-
    - name: Creates destination directory on FreeNAS
      file:
        path='{{ fetch_to_dir }}'

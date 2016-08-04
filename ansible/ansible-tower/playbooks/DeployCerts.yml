@@ -47,7 +47,7 @@
        recursive=yes 
        archive=no
        rsync_path="sudo rsync"
-    with_items:
+     with_items:
      - '{{ fetch_from_dir }}'
 
 # Task 3: Copy certificates to proxmox directory

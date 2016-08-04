@@ -75,7 +75,7 @@
 
    - name: Send live certificates folder from local to remote hosts
      synchronize:  
-     src={{ item }} 
+     src='{{ item }}' 
      dest='{{ fetch_to_dir }}' 
      mode=push 
      recursive=yes 

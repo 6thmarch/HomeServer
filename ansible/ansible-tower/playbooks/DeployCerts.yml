@@ -28,7 +28,7 @@
           with_items:
                 - '{{ fetch_from_dir }}'
         - name: Modify certificates permission
-          local_action: acl: 
+          local_action: acl 
                             name=/etc/letsencrypt/live 
                             entity=awx 
                             etype=user 

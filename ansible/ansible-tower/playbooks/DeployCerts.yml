@@ -86,11 +86,11 @@
   
    - name: Move privkey to FreeNAS certificates directory
      command:
-        cp '{{ privkey_path }}' '{{ freenas_privkey_path }}'
+      #  cp '{{ privkey_path }}' '{{ freenas_privkey_path }}'
 
    - name: Move fullchain to FreeNAS certificates directory
      command:
-        cp '{{ fullchain_path }}' '{{ freenas_fullchain_path }}'
+      #  cp '{{ fullchain_path }}' '{{ freenas_fullchain_path }}'
 
 # Task 5: Modify permissions and copy certificates to SABnzbd folder
 - hosts: '{{ downloadstation_hosts }}'

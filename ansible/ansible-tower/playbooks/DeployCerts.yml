@@ -20,7 +20,7 @@
             recursive=yes
         - name: Fetch live certificates folder from letsencrypt generation host to local
           synchronize:  
-            src={{ item }} 
+            src='{{ item }}' 
             dest='{{ fetch_to_dir }}' 
             mode=pull 
             recursive=yes 
@@ -41,7 +41,7 @@
 
    - name: Send live certificates folder from local to remote hosts
      synchronize:  
-     src={{ item }} 
+     src='{{ item }}' 
      dest='{{ fetch_to_dir }}' 
      mode=push 
      recursive=yes 

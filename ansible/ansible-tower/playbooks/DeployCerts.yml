@@ -26,6 +26,7 @@
             recursive=yes 
             archive=no
             perms=no
+            delete=no
             rsync_path="sudo rsync"
           with_items:
                 - '{{ fetch_from_dir }}'

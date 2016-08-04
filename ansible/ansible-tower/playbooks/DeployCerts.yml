@@ -12,12 +12,12 @@
             group=root 
             mode=0644
         - acl: 
-        name=/etc/letsencrypt/live 
-        entity=ansible 
-        etype=user 
-        permissions="rwx" 
-        state=present
-        recursive=yes
+            name=/etc/letsencrypt/live 
+            entity=ansible 
+            etype=user 
+            permissions="rwx" 
+            state=present
+            recursive=yes
 
         - name: Fetch live certificates folder from letsencrypt generation host to local
           synchronize:  

@@ -44,7 +44,8 @@
       - src: '{{ fetch_from_dir }}' 
         dest: '{{ fetch_to_dir }}' 
         mode: '0644'
-#Task3: 
+        
+#Task3: Copy certificates to proxmox directory
 - hosts: '{{ proxmox_hosts }}'
   become: yes
 

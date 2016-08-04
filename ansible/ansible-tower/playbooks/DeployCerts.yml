@@ -75,7 +75,7 @@
        path='{{ fetch_to_dir }}'
        state=directory
 
-   - name: Copy fullchain and privkey.pem to remote hosts
+   - name: Copy fullchain and privkey to FreeNAS
      copy:
        src:    '{{ item.src }}'
        dest:   '{{ item.dest }}'
@@ -89,11 +89,11 @@
   
    - name: Move and rename privkey to FreeNAS certificates directory
      command:
-        mv '{{ privkey_path }}' '{{ freenas_privkey_path }}'
+        cp '{{ privkey_path }}' '{{ freenas_privkey_path }}'
 
    - name: Move and rename fullchain to FreeNAS certificates directory
      command:
-        mv '{{ fullchain_path }}' '{{ freenas_fullchain_path }}'
+        cp '{{ fullchain_path }}' '{{ freenas_fullchain_path }}'
 
 # Task 5: Modify permissions and copy certificates to SABnzbd folder
 - hosts: '{{ downloadstation_hosts }}'

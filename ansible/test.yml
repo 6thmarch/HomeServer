@@ -1,0 +1,9 @@
+---
+- hosts: '{{ hosts }}'
+  become: yes
+  tasks:
+        - name: Fetch stuff from the remote and save to local
+          synchronize:  src={{ item }} dest='{{ fetch_to_dir }}' mode=pull
+          with_items:
+                - '{{ fetch_from_dir }}'
+          recursive: yes

@@ -93,16 +93,16 @@
   become: yes
 
   tasks:
-   - name: Modify ownership of privkey.pem to sixthmarch
+   - name: Modify ownership of privkey
      file:
         path: '{{ privkey_path }}'
-        owner: sixthmarch
-        group: sixthmarch
-   - name: Set ownership of cert.pem to sixthmarch
+        owner: '{{ process_owner }}'
+        group: '{{ process_owner }}'
+   - name: Modify ownership of cert
      file:
         path: '{{ cert_path }}'
-        owner: sixthmarch
-        group: sixthmarch
+        owner: '{{ process_owner }}'
+        group: '{{ process_owner }}'
 
    - name: Move and rename privkey to SABnzbd directory
      command:
@@ -110,3 +110,17 @@
    - name: Move and rename cert to SABnzbd directory
      command:
         cp '{{ cert_path }}' '{{ sabnzbd_cert_path }}'
+
+- hosts: plexmediaserver
+  become: yes
+  
+# Task 6: Create PKCS12 archive of the certificate and key for Plex
+  tasks:
+  - name: Create PKCS12 archive of the certificate and key 
+    command:
+       openssl pkcs12 -export -in '{{ fullchain_path }}' -inkey '{{ privkey_path }}' -out '{{ plex_pkcs_path }}' -name "cert" -passout '{{ plex_pkcs_pass }}'
+  - name: Modify ownership of PKCS12 archive
+    file:
+       path: '{{ plex_pkcs_path }}'
+       owner: '{{ process_owner }}'
+       group: '{{ process_owner }}'

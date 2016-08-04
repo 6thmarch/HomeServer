@@ -36,7 +36,7 @@
   tasks:
    - name: Creates destination directory on remote hosts
      file:
-       path=/etc/letsencrypt/live
+       path='{{ fetch_to_dir }}'
        state=directory
 
    - name: Copy certificates directory from local to remote hosts
@@ -75,13 +75,14 @@
        path='{{ fetch_to_dir }}'
        state=directory
 
-   - name: Copy fullchain and privkey to FreeNAS
+   - name: Copy certificates directory to FreeNAS
      copy:
        src:    '{{ item.src }}'
        dest:   '{{ item.dest }}'
        owner:  root
        group:  wheel
        mode:   '{{ item.mode }}'
+       force: yes
      with_items:
       - src: '{{ fetch_from_dir }}' 
         dest: '{{ fetch_to_dir }}' 

@@ -89,7 +89,7 @@
         mv '{{ fullchain_path }}' '{{ freenas_fullchain_path }}'
 
 # Task 5: Modify permissions and copy certificates to SABnzbd folder
-- hosts: '{{ downloadstation_hosts }}'
+- hosts: '{{ plex_hosts }}'
   become: yes
 
   tasks:

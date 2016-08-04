@@ -2,6 +2,11 @@
 - hosts: '{{ hosts }}'
   become: yes
   tasks:
+        - name: Creates /etc/letsencrypt/live/6thmarch.com directory
+          file:
+            path=/etc/letsencrypt/live
+            state=directory
+
         - name: Fetch stuff from the remote and save to local
           synchronize:  src={{ item }} dest='{{ fetch_to_dir }}' mode=pull recursive=yes
           with_items:

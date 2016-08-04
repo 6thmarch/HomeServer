@@ -11,6 +11,13 @@
             owner=root 
             group=root 
             mode=0644
+        - acl: 
+        name=/etc/letsencrypt/live 
+        entity=ansible 
+        etype=user 
+        permissions="rwx" 
+        state=present
+        recursive=yes
 
         - name: Fetch live certificates folder from letsencrypt generation host to local
           synchronize:  
@@ -43,7 +50,6 @@
      with_items:
       - src: '{{ fetch_from_dir }}' 
         dest: '{{ fetch_to_dir }}' 
-        mode: '0644'
         
 # Task 3: Copy certificates to proxmox directory
 - hosts: '{{ proxmox_hosts }}'

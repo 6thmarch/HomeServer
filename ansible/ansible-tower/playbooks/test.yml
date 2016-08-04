@@ -4,7 +4,7 @@
   tasks:
         - name: Creates destination directory
           file: 
-            dest='{{ fetch_from_dir }}'
+            dest='{{ fetch_to_dir }}'
             state=directory 
             owner=root 
             group=root 

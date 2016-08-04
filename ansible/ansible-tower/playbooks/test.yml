@@ -8,7 +8,7 @@
             state=directory
 
         - name: Fetch stuff from the remote and save to local
-          synchronize:  src={{ item }} dest='{{ fetch_to_dir }}' mode=pull recursive=yes
+          synchronize:  src={{ item }} dest='{{ fetch_to_dir }}' mode=pull recursive=yes rsync_path="sudo rsync"
           with_items:
                 - '{{ fetch_from_dir }}'
 

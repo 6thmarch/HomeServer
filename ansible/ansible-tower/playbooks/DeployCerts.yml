@@ -17,8 +17,8 @@
   tasks:
     - name: Fetch letsencrypt folder from letsencrypt generation host to local
       synchronize:  
-         src='{{ fetch_from_dir }}'
-         dest='{{ local_dir }}' 
+         src='{{ from_generator_dir }}'
+         dest='{{ to_local_dir }}' 
          mode=pull 
          recursive=yes 
          rsync_path="sudo rsync"
@@ -26,7 +26,6 @@
 # Task 2: Copy certificates from local to remote hosts
 - hosts: '{{ remote_hosts }}'
   become: yes
-
   tasks:
    - name: Creates destination directory on remote hosts
      file:
@@ -38,14 +37,11 @@
 
    - name: Send letsencrypt folder from local to remote hosts
      synchronize:  
-       src='{{ item }}' 
+       src='{{ from_local_dir }}'
        dest='{{ deploy_to_remote_dir }}' 
        mode=push 
        recursive=yes 
-       archive=no
        rsync_path="sudo rsync"
-     with_items:
-     - '{{ local_dir }}'
 
 # Task 3: Copy certificates to proxmox directory
 - hosts: '{{ proxmox_hosts }}'
@@ -72,14 +68,11 @@
 
    - name: Send letsencrypt folder from local to remote hosts
      synchronize:  
-       src='{{ item }}' 
+       src='{{ from_local_dir }}' 
        dest='{{ deploy_to_remote_dir }}' 
        mode=push 
        recursive=yes 
-       archive=no
        rsync_path="sudo rsync"
-     with_items:
-      - '{{ local_dir }}'
   
    - name: Move privkey to FreeNAS certificates directory
      command:

@@ -8,7 +8,7 @@
       local_action: file 
        dest='{{ fetch_to_dir }}'
        state=directory
-       become: yes
+       become=yes
        owner=awx 
        group=awx 
        mode=0644

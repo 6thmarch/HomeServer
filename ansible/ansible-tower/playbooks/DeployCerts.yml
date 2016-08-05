@@ -100,7 +100,6 @@
      command:
         cp '{{ cert_path }}' '{{ sabnzbd_cert_path }}'
 
-
 # Task 6: Create PKCS12 archive of the certificate and key for Plex
 - hosts: '{{ plex_hosts }}'
   become: yes
@@ -109,11 +108,8 @@
     command:
        openssl pkcs12 -export -in '{{ fullchain_path }}' -inkey '{{ privkey_path }}' -out '{{ plex_pkcs_path }}' -name "cert" -passout '{{ plex_pkcs_pass }}'
   - name: Modify ownership of PKCS12 archive
-    file:
-       path: '{{ plex_pkcs_path }}'
-       owner: '{{ alt_process_owner }}'
-       group: '{{ alt_process_owner }}'
-
+    command:
+       chown '{{ alt_process_owner }}' '{{ plex_pkcs_path }}'
 
 # Task 7: Copy certificates to PRTG directory 
 - hosts: '{{ prtg_hosts }}'

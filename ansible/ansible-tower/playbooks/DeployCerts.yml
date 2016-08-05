@@ -22,15 +22,15 @@
          recursive=yes 
          rsync_path="sudo rsync"
          perms=no
-
          
+# Task 2: Modify permissions of folder  
 - hosts: localhost
   tasks:
     - name: Modify permissions of folder
-      local_action: command
+      command:
          chmod -R 0755 '{{ to_local_dir }}'
 
-# Task 2: Copy certificates from local to remote hosts
+# Task 3: Copy certificates from local to remote hosts
 - hosts: '{{ remote_hosts }}'
   become: yes
   tasks:
@@ -54,7 +54,7 @@
      command:
        chmod -R 0755 '{{ deploy_to_remote_dir }}'
 
-# Task 3: Copy certificates to proxmox directory
+# Task 4: Copy certificates to proxmox directory
 - hosts: '{{ proxmox_hosts }}'
   become: yes
 
@@ -67,7 +67,7 @@
     command:
        cp '{{ remote_fullchain_path }}' '{{ proxmox_fullchain_path }}'
 
-# Task 4: Copy certificates from local to FreeNAS host. Require separate task due to different root group. 
+# Task 5: Copy certificates from local to FreeNAS host. Require separate task due to different root group. 
 - hosts: '{{ freenas_hosts }}'
   become: yes
 
@@ -97,7 +97,7 @@
      command:
         cp '{{ remote_fullchain_path }}' '{{ freenas_fullchain_path }}'
 
-# Task 5: Modify permissions and copy certificates to SABnzbd folder
+# Task 6: Modify permissions and copy certificates to SABnzbd folder
 - hosts: '{{ downloadstation_hosts }}'
   become: yes
 
@@ -115,7 +115,7 @@
      command:
         cp '{{ remote_cert_path }}' '{{ sabnzbd_cert_path }}'
 
-# Task 6: Create PKCS12 archive of the certificate and key for Plex
+# Task 7: Create PKCS12 archive of the certificate and key for Plex
 - hosts: '{{ plex_hosts }}'
   become: yes
   tasks:
@@ -126,7 +126,7 @@
     command:
        chown '{{ alt_process_owner }}' '{{ remote_plex_pkcs_path }}'
 
-# Task 7: Copy certificates to PRTG directory 
+# Task 8: Copy certificates to PRTG directory 
 - hosts: '{{ prtg_hosts }}'
   tasks:
    - name: Copy privkey to PRTG folder
@@ -138,7 +138,7 @@
         src: '{{ local_cert_path }}'
         dest: '{{ prtg_cert_path }}'
 
-# Task 8: Copy certificates to Ansible Tower directory 
+# Task 9: Copy certificates to Ansible Tower directory 
 - hosts: localhost
   tasks:
    - name: Copy privkey to Ansible Tower folder

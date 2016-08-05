@@ -24,7 +24,6 @@
          rsync_path="sudo rsync"
       with_items:
          - '{{ fetch_from_dir }}'
-      delegate_to: '{{ letsencrypt_host }}'
 
 # Task 2: Copy certificates from local to remote hosts
 - hosts: '{{ remote_hosts }}'

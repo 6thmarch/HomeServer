@@ -12,16 +12,16 @@
 #       group=root 
 #       mode=0644
 
-#    - name: Fetch letsencrypt folder from letsencrypt generation host to local
-#      synchronize:  
-#         src={{ item }} 
-#         dest='{{ fetch_to_dir }}' 
-#         mode=pull 
-#         recursive=yes 
-#         archive=no
-#         rsync_path="sudo rsync"
-#      with_items:
-#          - '{{ fetch_from_dir }}'
+    - name: Fetch letsencrypt folder from letsencrypt generation host to local
+      synchronize:  
+         src={{ item }} 
+         dest='{{ fetch_to_dir }}' 
+         mode=pull 
+         recursive=yes 
+         archive=no
+         rsync_path="sudo rsync"
+      with_items:
+         - '{{ fetch_from_dir }}'
 
 # Task 2: Copy certificates from local to remote hosts
 - hosts: '{{ remote_hosts }}'

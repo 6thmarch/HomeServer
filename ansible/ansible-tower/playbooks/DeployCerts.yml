@@ -1,6 +1,7 @@
 ---
 # Task 0: Prepare residing directory
 - hosts: localhost
+  connection: local
   tasks:
     - name: Creates local directory to hold certificates
       file: 
@@ -25,6 +26,8 @@
          
 # Task 2: Modify permissions of folder  
 - hosts: localhost
+  connection: local
+
   tasks:
     - name: Modify permissions of folder
       command:
@@ -140,6 +143,7 @@
 
 # Task 9: Copy certificates to Ansible Tower directory 
 - hosts: localhost
+  connection: local
 
   tasks:
    - name: Move and rename privkey to tower directory

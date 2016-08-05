@@ -109,7 +109,7 @@
        openssl pkcs12 -export -in '{{ remote_fullchain_path }}' -inkey '{{ remote_privkey_path }}' -out '{{ remote_plex_pkcs_path }}' -name "cert" -passout '{{ plex_pkcs_pass }}'
   - name: Modify ownership of PKCS12 archive
     command:
-       chown '{{ alt_process_owner }}' '{{ plex_pkcs_path }}'
+       chown '{{ alt_process_owner }}' '{{ remote_plex_pkcs_path }}'
 
 # Task 7: Copy certificates to PRTG directory 
 - hosts: '{{ prtg_hosts }}'

@@ -9,8 +9,8 @@
        dest='{{ fetch_to_dir }}'
        state=directory
        become: yes
-       owner=root 
-       group=root 
+       owner=awx 
+       group=awx 
        mode=0644
 
     - name: Fetch letsencrypt folder from letsencrypt generation host to local

@@ -110,10 +110,10 @@
         chown '{{ alt_process_owner }}' '{{ remote_cert_path }}'
    - name: Move and rename privkey to SABnzbd directory
      command:
-        cp -rf '{{ remote_privkey_path }}' '{{ sabnzbd_privkey_path }}'
+        cp -f '{{ remote_privkey_path }}' '{{ sabnzbd_privkey_path }}'
    - name: Move and rename cert to SABnzbd directory
      command:
-        cp -rf '{{ remote_cert_path }}' '{{ sabnzbd_cert_path }}'
+        cp -f '{{ remote_cert_path }}' '{{ sabnzbd_cert_path }}'
 
 # Task 7: Create PKCS12 archive of the certificate and key for Plex
 - hosts: '{{ plex_hosts }}'

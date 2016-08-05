@@ -19,12 +19,12 @@
       synchronize:  
          src='{{ item }}' 
          dest='{{ local_dir }}' 
-         mode=pull 
+         mode=push 
          recursive=yes 
          rsync_path="sudo rsync"
       with_items:
          - '{{ fetch_from_dir }}'
-      delegate_to: localhost
+      delegate_to: '{{ letsencrypt_host }}'
 
 # Task 2: Copy certificates from local to remote hosts
 - hosts: '{{ remote_hosts }}'

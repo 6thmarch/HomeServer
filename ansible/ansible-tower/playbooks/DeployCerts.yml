@@ -21,7 +21,7 @@
          dest='{{ local_dir }}' 
          mode=pull 
          recursive=yes 
-         rsync_path="rsync"
+         rsync_path="su -c rsync"
       with_items:
          - '{{ fetch_from_dir }}'
 

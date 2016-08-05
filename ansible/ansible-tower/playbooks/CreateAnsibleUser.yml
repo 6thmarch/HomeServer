@@ -3,7 +3,8 @@
   become: yes
   tasks:
 
-  - user: '{{ ubuntu_insert_user }}' 
+  - user: 
+    name: '{{ ubuntu_insert_user }}' 
 
   - name: Placing key
     authorized_key: '{{ auth_key }}'

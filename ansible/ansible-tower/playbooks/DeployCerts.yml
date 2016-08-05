@@ -140,7 +140,6 @@
 
 # Task 9: Copy certificates to Ansible Tower directory 
 - hosts: localhost
-  connection: local
 
   tasks:
    - name: Move and rename privkey to tower directory

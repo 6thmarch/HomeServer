@@ -50,11 +50,11 @@
   tasks:
   - name: Move and rename privkey to proxmox directory
     command:
-       cp '{{ privkey_path }}' '{{ proxmox_privkey_path }}'
+       cp '{{ remote_privkey_path }}' '{{ proxmox_privkey_path }}'
 
   - name: Move and rename fullchain to proxmox directory
     command:
-       cp '{{ fullchain_path }}' '{{ proxmox_fullchain_path }}'
+       cp '{{ remote_fullchain_path }}' '{{ proxmox_fullchain_path }}'
 
 # Task 4: Copy certificates from local to FreeNAS host. Require separate task due to different root group. 
 - hosts: '{{ freenas_hosts }}'
@@ -76,11 +76,11 @@
   
    - name: Move privkey to FreeNAS certificates directory
      command:
-        cp '{{ privkey_path }}' '{{ freenas_privkey_path }}'
+        cp '{{ remote_privkey_path }}' '{{ freenas_privkey_path }}'
 
    - name: Move fullchain to FreeNAS certificates directory
      command:
-        cp '{{ fullchain_path }}' '{{ freenas_fullchain_path }}'
+        cp '{{ remote_fullchain_path }}' '{{ freenas_fullchain_path }}'
 
 # Task 5: Modify permissions and copy certificates to SABnzbd folder
 - hosts: '{{ downloadstation_hosts }}'
@@ -89,16 +89,16 @@
   tasks:
    - name: Modify ownership of privkey
      command:
-        chown '{{ alt_process_owner }}' '{{ privkey_path }}'
+        chown '{{ alt_process_owner }}' '{{ remote_privkey_path }}'
    - name: Modify ownership of cert
      command:
-        chown '{{ alt_process_owner }}' '{{ cert_path }}'
+        chown '{{ alt_process_owner }}' '{{ remote_cert_path }}'
    - name: Move and rename privkey to SABnzbd directory
      command:
-        cp '{{ privkey_path }}' '{{ sabnzbd_privkey_path }}'
+        cp '{{ remote_privkey_path }}' '{{ sabnzbd_privkey_path }}'
    - name: Move and rename cert to SABnzbd directory
      command:
-        cp '{{ cert_path }}' '{{ sabnzbd_cert_path }}'
+        cp '{{ remote_cert_path }}' '{{ sabnzbd_cert_path }}'
 
 # Task 6: Create PKCS12 archive of the certificate and key for Plex
 - hosts: '{{ plex_hosts }}'
@@ -106,7 +106,7 @@
   tasks:
   - name: Create PKCS12 archive of the certificate and key 
     command:
-       openssl pkcs12 -export -in '{{ fullchain_path }}' -inkey '{{ privkey_path }}' -out '{{ plex_pkcs_path }}' -name "cert" -passout '{{ plex_pkcs_pass }}'
+       openssl pkcs12 -export -in '{{ remote_fullchain_path }}' -inkey '{{ remote_privkey_path }}' -out '{{ remote_plex_pkcs_path }}' -name "cert" -passout '{{ plex_pkcs_pass }}'
   - name: Modify ownership of PKCS12 archive
     command:
        chown '{{ alt_process_owner }}' '{{ plex_pkcs_path }}'
@@ -116,11 +116,11 @@
   tasks:
    - name: Copy privkey to PRTG folder
      win_copy:
-        src: '{{ privkey_path }}'
+        src: '{{ local_privkey_path }}'
         dest: '{{ prtg_privkey_path }}'
    - name: Copy cert to PRTG folder
      win_copy:
-        src: '{{ cert_path }}'
+        src: '{{ local_cert_path }}'
         dest: '{{ prtg_cert_path }}'
 
 # Task 8: Copy certificates to Ansible Tower directory 
@@ -128,11 +128,11 @@
   tasks:
    - name: Copy privkey to Ansible Tower folder
      copy:
-        src: '{{ privkey_path }}'
+        src: '{{ local_privkey_path }}'
         dest: '{{ ansible_privkey_path }}'
    - name: Copy cert to Ansible Tower folder
      copy:
-        src: '{{ cert_path }}'
+        src: '{{ local_cert_path }}'
         dest: '{{ ansible_cert_path }}'
 
 

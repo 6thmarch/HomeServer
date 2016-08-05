@@ -21,6 +21,7 @@
          mode=pull 
          recursive=yes 
          rsync_path="sudo rsync"
+         perms=no
     - name: Modify permissions of folder
       local_action: command
          chmod -R 0755 '{{ to_local_dir }}'

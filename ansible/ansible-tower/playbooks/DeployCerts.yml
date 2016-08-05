@@ -32,6 +32,9 @@
      file:
        path='{{ deploy_to_remote_dir }}'
        state=directory
+       owner=ansible
+       group=ansible
+       mode=0744
 
    - name: Send letsencrypt folder from local to remote hosts
      synchronize:  

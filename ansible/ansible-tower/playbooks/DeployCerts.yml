@@ -1,9 +1,9 @@
 ---
-# Task 1: Fetch certificates from letsencrypt generation host
-#- hosts: '{{ letsencrypt_host }}'
-#  become: yes
-#  
-#  tasks:
+ Task 1: Fetch certificates from letsencrypt generation host
+- hosts: '{{ letsencrypt_host }}'
+  become: yes
+  
+  tasks:
        # - name: Creates local directory to hold certificates
         #  file: 
          #   dest='{{ fetch_to_dir }}'
@@ -12,16 +12,16 @@
           #  group=root 
           #  mode=0644
 
-#        - name: Fetch letsencrypt folder from letsencrypt generation host to local
-#          synchronize:  
-#            src='{{ item }}' 
-#            dest='{{ fetch_to_dir }}' 
-#            mode=pull 
-#            recursive=yes 
-#            archive=no
-#            rsync_path="sudo rsync"
-#          with_items:
-#                - '{{ fetch_from_dir }}'
+        - name: Fetch letsencrypt folder from letsencrypt generation host to local
+          synchronize:  
+            src='{{ item }}' 
+            dest='{{ fetch_to_dir }}' 
+            mode=pull 
+            recursive=yes 
+            archive=no
+            rsync_path="sudo rsync"
+          with_items:
+                - '{{ fetch_from_dir }}'
 
 # Task 2: Copy certificates from local to remote hosts
 - hosts: '{{ remote_hosts }}'
@@ -33,7 +33,7 @@
        path='{{ fetch_to_dir }}'
        state=directory
 
-   - name: Send live certificates folder from local to remote hosts
+   - name: Send letsencrypt folder from local to remote hosts
      synchronize:  
        src='{{ item }}' 
        dest='{{ fetch_to_dir }}' 
@@ -67,7 +67,7 @@
        path='{{ fetch_to_dir }}'
        state=directory
 
-   - name: Send live certificates folder from local to remote hosts
+   - name: Send letsencrypt folder from local to remote hosts
      synchronize:  
        src='{{ item }}' 
        dest='{{ fetch_to_dir }}' 

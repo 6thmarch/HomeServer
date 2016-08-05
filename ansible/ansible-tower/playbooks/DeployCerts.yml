@@ -7,10 +7,10 @@
     - name: Creates local directory to hold certificates
       file: 
        dest='{{ fetch_to_dir }}'
-      state=directory 
-      owner=root 
-      group=root 
-      mode=0644
+       state=directory 
+       owner=root 
+       group=root 
+       mode=0644
 
     - name: Fetch letsencrypt folder from letsencrypt generation host to local
       synchronize:  

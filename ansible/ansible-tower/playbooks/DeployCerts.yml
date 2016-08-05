@@ -5,7 +5,7 @@
   
   tasks:
     - name: Creates local directory to hold certificates
-      file: 
+      local_action: file 
        dest='{{ fetch_to_dir }}'
        state=directory 
        owner=root 

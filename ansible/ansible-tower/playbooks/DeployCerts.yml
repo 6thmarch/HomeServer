@@ -76,6 +76,10 @@
        mode=push 
        recursive=yes 
        rsync_path="sudo rsync"
+       
+   - name: Modify permissions of folder
+     command:
+       chmod -R 0755 '{{ deploy_to_remote_dir }}'  
   
    - name: Move privkey to FreeNAS certificates directory
      command:

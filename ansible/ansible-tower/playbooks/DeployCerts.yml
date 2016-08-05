@@ -88,16 +88,11 @@
 
   tasks:
    - name: Modify ownership of privkey
-     file:
-        path: '{{ privkey_path }}'
-        owner: '{{ process_owner }}'
-        group: '{{ process_owner }}'
+     command:
+        chmod '{{ downloadstation_process_owner }}':'{{ downloadstation_process_owner }}' '{{ privkey_path }}'
    - name: Modify ownership of cert
-     file:
-        path: '{{ cert_path }}'
-        owner: '{{ process_owner }}'
-        group: '{{ process_owner }}'
-
+     command:
+        chmod '{{ downloadstation_process_owner }}':'{{ downloadstation_process_owner }}' '{{ cert_path }}'
    - name: Move and rename privkey to SABnzbd directory
      command:
         cp '{{ privkey_path }}' '{{ sabnzbd_privkey_path }}'

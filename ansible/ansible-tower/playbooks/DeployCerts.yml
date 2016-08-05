@@ -61,11 +61,11 @@
   tasks:
   - name: Move and rename privkey to proxmox directory
     command:
-       cp '{{ remote_privkey_path }}' '{{ proxmox_privkey_path }}'
+       cp -rf '{{ remote_privkey_path }}' '{{ proxmox_privkey_path }}'
 
   - name: Move and rename fullchain to proxmox directory
     command:
-       cp '{{ remote_fullchain_path }}' '{{ proxmox_fullchain_path }}'
+       cp -rf '{{ remote_fullchain_path }}' '{{ proxmox_fullchain_path }}'
 
 # Task 5: Copy certificates from local to FreeNAS host. Require separate task due to different root group. 
 - hosts: '{{ freenas_hosts }}'
@@ -91,11 +91,11 @@
   
    - name: Move privkey to FreeNAS certificates directory
      command:
-        cp '{{ remote_privkey_path }}' '{{ freenas_privkey_path }}'
+        cp -rf '{{ remote_privkey_path }}' '{{ freenas_privkey_path }}'
 
    - name: Move fullchain to FreeNAS certificates directory
      command:
-        cp '{{ remote_fullchain_path }}' '{{ freenas_fullchain_path }}'
+        cp -rf '{{ remote_fullchain_path }}' '{{ freenas_fullchain_path }}'
 
 # Task 6: Modify permissions and copy certificates to SABnzbd folder
 - hosts: '{{ downloadstation_hosts }}'
@@ -110,10 +110,10 @@
         chown '{{ alt_process_owner }}' '{{ remote_cert_path }}'
    - name: Move and rename privkey to SABnzbd directory
      command:
-        cp '{{ remote_privkey_path }}' '{{ sabnzbd_privkey_path }}'
+        cp -rf '{{ remote_privkey_path }}' '{{ sabnzbd_privkey_path }}'
    - name: Move and rename cert to SABnzbd directory
      command:
-        cp '{{ remote_cert_path }}' '{{ sabnzbd_cert_path }}'
+        cp -rf '{{ remote_cert_path }}' '{{ sabnzbd_cert_path }}'
 
 # Task 7: Create PKCS12 archive of the certificate and key for Plex
 - hosts: '{{ plex_hosts }}'
@@ -143,9 +143,9 @@
   tasks:
    - name: Move and rename privkey to tower directory
      command:
-        cp '{{ local_privkey_path }}' '{{ ansible_privkey_path }}'
+        cp -rf '{{ local_privkey_path }}' '{{ ansible_privkey_path }}'
    - name: Move and rename cert to tower directory
      command:
-        cp '{{ local_cert_path }}' '{{ ansible_cert_path }}'
+        cp -rf '{{ local_cert_path }}' '{{ ansible_cert_path }}'
 
 

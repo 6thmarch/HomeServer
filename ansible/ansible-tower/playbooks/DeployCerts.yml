@@ -1,6 +1,6 @@
 ---
 # Task 0: Prepare residing directory
-- hosts: local
+- hosts: localhost
   become: yes
   tasks:
     - name: Creates local directory to hold certificates

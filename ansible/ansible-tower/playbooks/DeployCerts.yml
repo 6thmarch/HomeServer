@@ -21,6 +21,10 @@
          mode=pull 
          recursive=yes 
          rsync_path="sudo rsync"
+    - name: Modify permissions of folder
+      command:
+         chmod -R 0755 '{{ to_local_dir }}'
+
 
 # Task 2: Copy certificates from local to remote hosts
 - hosts: '{{ remote_hosts }}'

@@ -9,7 +9,7 @@
        state=directory
        owner=awx 
        group=awx 
-       mode=0644
+       mode=0744
 
 # Task 1: Fetch certificates from letsencrypt generation host
 - hosts: '{{ letsencrypt_host }}'

@@ -5,7 +5,7 @@
   tasks:
     - name: Creates local directory to hold certificates
       file: 
-       path=/ssl/#'{{ fetch_to_dir }}'
+       path='{{ local_dir }}'
        state=directory
        owner=awx 
        group=awx 
@@ -17,7 +17,7 @@
     - name: Fetch letsencrypt folder from letsencrypt generation host to local
       synchronize:  
          src={{ item }} 
-         dest='{{ fetch_to_dir }}' 
+         dest='{{ local_dir }}' 
          mode=pull 
          recursive=yes 
          rsync_path="sudo rsync"
@@ -31,19 +31,19 @@
   tasks:
    - name: Creates destination directory on remote hosts
      file:
-       path='{{ fetch_to_dir }}'
+       path='{{ deploy_to_remote_dir }}'
        state=directory
 
    - name: Send letsencrypt folder from local to remote hosts
      synchronize:  
        src='{{ item }}' 
-       dest='{{ fetch_to_dir }}' 
+       dest='{{ deploy_to_remote_dir }}' 
        mode=push 
        recursive=yes 
        archive=no
        rsync_path="sudo rsync"
      with_items:
-     - '{{ fetch_from_dir }}'
+     - '{{ local_dir }}'
 
 # Task 3: Copy certificates to proxmox directory
 - hosts: '{{ proxmox_hosts }}'
@@ -65,19 +65,19 @@
   tasks:
    - name: Creates destination directory on FreeNAS
      file:
-       path='{{ fetch_to_dir }}'
+       path='{{ deploy_to_remote_dir }}'
        state=directory
 
    - name: Send letsencrypt folder from local to remote hosts
      synchronize:  
        src='{{ item }}' 
-       dest='{{ fetch_to_dir }}' 
+       dest='{{ deploy_to_remote_dir }}' 
        mode=push 
        recursive=yes 
        archive=no
        rsync_path="sudo rsync"
      with_items:
-      - '{{ fetch_from_dir }}'
+      - '{{ local_dir }}'
   
    - name: Move privkey to FreeNAS certificates directory
      command:

@@ -7,7 +7,7 @@
       local_action: file 
        path='{{ fetch_to_dir }}'
        state=directory
-       owner=awx 
+       owner=root 
        group=awx 
        mode=0644
 

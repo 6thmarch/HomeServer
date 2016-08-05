@@ -42,8 +42,8 @@
        recursive=yes 
        rsync_path="sudo rsync"
        
-  - name: Modify ownership of cert
-    command:
+   - name: Modify ownership of cert
+     command:
        chmod '{{ remote_files_perms }}'
 
 # Task 3: Copy certificates to proxmox directory

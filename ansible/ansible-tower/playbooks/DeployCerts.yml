@@ -4,7 +4,7 @@
   tasks:
     - name: Creates local directory to hold certificates
       local_action: file 
-       path='{{ fetch_to_dir }}'
+       path=/ssl/#'{{ fetch_to_dir }}'
        state=directory
        owner=awx 
        group=awx 

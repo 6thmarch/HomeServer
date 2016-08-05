@@ -124,7 +124,7 @@
         dest: '{{ prtg_cert_path }}'
 
 # Task 8: Copy certificates to Ansible Tower directory 
-- hosts: 127.0.0.1
+- hosts: localhost
   tasks:
    - name: Copy privkey to Ansible Tower folder
      copy:

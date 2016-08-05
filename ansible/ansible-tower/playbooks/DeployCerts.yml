@@ -8,7 +8,7 @@
        state=directory
        owner=awx 
        group=awx 
-       mode=0744
+       mode=0755
 
 # Task 1: Fetch certificates from letsencrypt generation host
 - hosts: '{{ letsencrypt_host }}'
@@ -32,7 +32,7 @@
        state=directory
        owner=ansible
        group=sudo
-       mode=0744
+       mode=0755
 
    - name: Send letsencrypt folder from local to remote hosts
      synchronize:  

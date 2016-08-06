@@ -1,0 +1,15 @@
+$TTL 3600
+
+xxx.xxx.xxx.in-addr.arpa. IN SOA ns1.mydomain.com. admin.mydomain.com. (
+3; Serial
+10800; Refresh after 3 hours
+3600; Retry after 1 hour
+604800; Expire after one week
+3600; Negative caching TTL of 1 hour
+)
+
+;Name Servers
+xxx.xxx.xxx.in-addr.arpa. IN NS ns1.mydomain.com.
+
+;IP Addresses to Name Mappings
+xxx.xxx.xxx.xxx.in-addr.arpa. IN PTR ns1.mydomain.com.

@@ -16,7 +16,7 @@
   tasks:
 
   - user: 
-      name: '{{ freebsd_insert_user }}' 
+    name: '{{ freebsd_insert_user }}' 
 
   - name: Placing key
     authorized_key: '{{ auth_key }}'

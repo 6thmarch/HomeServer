@@ -152,4 +152,14 @@
      command:
         ln -fsv '{{ local_cert_path }}' '{{ ansible_cert_path }}'
 
+# Task 10: Modify permissions and copy certificates to OpenVPN folder
+- hosts: '{{ openvpn_hosts }}'
+  become: yes
 
+  tasks:
+   - name: Move and rename privkey to SABnzbd directory
+     command:
+        cp -rLf '{{ remote_privkey_path }}' '{{ openvpn_privkey_path }}'
+   - name: Move and rename cert to SABnzbd directory
+     command:
+        cp -rLf '{{ remote_cert_path }}' '{{ openvpn_cert_path }}'

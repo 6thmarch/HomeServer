@@ -147,9 +147,9 @@
   tasks:
    - name: Move and rename privkey to tower directory
      command:
-        cp -rLf '{{ local_privkey_path }}' '{{ ansible_privkey_path }}'
+        ln -fsv '{{ local_privkey_path }}' '{{ ansible_privkey_path }}'
    - name: Move and rename cert to tower directory
      command:
-        cp -rLf '{{ local_cert_path }}' '{{ ansible_cert_path }}'
+        ln -fsv '{{ local_cert_path }}' '{{ ansible_cert_path }}'
 
 

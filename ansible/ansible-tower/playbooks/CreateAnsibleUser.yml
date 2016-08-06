@@ -5,7 +5,9 @@
 
   - name: Creating user for ubuntu hosts
     user: 
-      name: '{{ ubuntu_insert_user }}' 
+      name: '{{ insert_username }}' 
+      comment: Ansible Management
+      group: sudo
       force: yes
 
   - name: Placing key
@@ -18,7 +20,9 @@
   tasks:
   - name: Creating user for FreeNAS hosts
     user: 
-      name: '{{ freebsd_insert_user }}' 
+      name: '{{ insert_username }}' 
+      comment: Ansible Management
+      group: wheel
       force: yes
 
   - name: Placing key

@@ -15,7 +15,12 @@
       user: '{{ insert_username }}' 
       key: '{{ auth_key }}'
 
-  - lineinfile: '{{ ubuntu_insert_user }}' 
+  - lineinfile: 
+      dest: '{{ ubuntu_line_dest }}'
+      state: present
+      regexp: '{{ line_regexp }}'
+      line: '{{ insert_line }}'
+  
 
 - hosts: '{{ remote_freenas }}'
   become: yes
@@ -32,5 +37,9 @@
       user: '{{ insert_username }}' 
       key: '{{ auth_key }}'
 
-  - lineinfile: '{{ freebsd_insert_user }}' 
+  - lineinfile: 
+      dest: '{{ freenas_line_dest }}'
+      state: present
+      regexp: '{{ line_regexp }}'
+      line: '{{ insert_line }}'
 

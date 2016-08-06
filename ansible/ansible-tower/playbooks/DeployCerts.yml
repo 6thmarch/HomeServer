@@ -1,0 +1,165 @@
+---
+# Task 0: Prepare residing directory
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Creates local directory to hold certificates
+      file: 
+       path='{{ to_local_dir }}'
+       state=directory
+       owner=awx 
+       group=awx 
+       mode=0755
+
+# Task 1: Fetch certificates from letsencrypt generation host
+- hosts: '{{ letsencrypt_host }}'
+  become: yes
+  tasks:
+    - name: Fetch letsencrypt folder from letsencrypt generation host to local
+      synchronize:  
+         src='{{ from_generator_dir }}'
+         dest='{{ to_local_dir }}' 
+         mode=pull 
+         recursive=yes 
+         rsync_path="sudo rsync"
+         perms=no
+         
+# Task 2: Modify permissions of folder  
+- hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Modify permissions of folder
+      command:
+         chmod -R 0755 '{{ to_local_dir }}'
+
+# Task 3: Copy certificates from local to remote hosts
+- hosts: '{{ remote_hosts }}'
+  become: yes
+  tasks:
+   - name: Creates destination directory on remote hosts
+     file:
+       path='{{ deploy_to_remote_dir }}'
+       state=directory
+       owner=ansible
+       group=sudo
+       mode=0755
+
+   - name: Send letsencrypt folder from local to remote hosts
+     synchronize:  
+       src='{{ from_local_dir }}'
+       dest='{{ deploy_to_remote_dir }}' 
+       mode=push 
+       recursive=yes 
+       rsync_path="sudo rsync"
+       
+   - name: Modify permissions of folder
+     command:
+       chmod -R 0755 '{{ deploy_to_remote_dir }}'
+
+# Task 4: Copy certificates to proxmox directory
+- hosts: '{{ proxmox_hosts }}'
+  become: yes
+
+  tasks:
+  - name: Move and rename privkey to proxmox directory
+    command:
+       cp -rLf '{{ remote_privkey_path }}' '{{ proxmox_privkey_path }}'
+
+  - name: Move and rename fullchain to proxmox directory
+    command:
+       cp -rLf '{{ remote_fullchain_path }}' '{{ proxmox_fullchain_path }}'
+
+# Task 5: Copy certificates from local to FreeNAS host. Require separate task due to different root group. 
+- hosts: '{{ freenas_hosts }}'
+  become: yes
+
+  tasks:
+   - name: Creates destination directory on FreeNAS
+     file:
+       path='{{ deploy_to_remote_dir }}'
+       state=directory
+
+   - name: Send letsencrypt folder from local to remote hosts
+     synchronize:  
+       src='{{ from_local_dir }}' 
+       dest='{{ deploy_to_remote_dir }}' 
+       mode=push 
+       recursive=yes 
+       rsync_path="sudo rsync"
+       
+   - name: Modify permissions of folder
+     command:
+       chmod -R 0755 '{{ deploy_to_remote_dir }}'  
+  
+   - name: Move privkey to FreeNAS certificates directory
+     command:
+        cp -rLf '{{ remote_privkey_path }}' '{{ freenas_privkey_path }}'
+
+   - name: Move fullchain to FreeNAS certificates directory
+     command:
+        cp -rLf '{{ remote_fullchain_path }}' '{{ freenas_fullchain_path }}'
+
+# Task 6: Modify permissions and copy certificates to SABnzbd folder
+- hosts: '{{ downloadstation_hosts }}'
+  become: yes
+
+  tasks:
+   - name: Modify ownership of privkey
+     command:
+        chown '{{ alt_process_owner }}' '{{ remote_privkey_path }}'
+   - name: Modify ownership of cert
+     command:
+        chown '{{ alt_process_owner }}' '{{ remote_cert_path }}'
+   - name: Move and rename privkey to SABnzbd directory
+     command:
+        cp -rLf '{{ remote_privkey_path }}' '{{ sabnzbd_privkey_path }}'
+   - name: Move and rename cert to SABnzbd directory
+     command:
+        cp -rLf '{{ remote_cert_path }}' '{{ sabnzbd_cert_path }}'
+
+# Task 7: Create PKCS12 archive of the certificate and key for Plex
+- hosts: '{{ plex_hosts }}'
+  become: yes
+  tasks:
+  - name: Create PKCS12 archive of the certificate and key 
+    command:
+       openssl pkcs12 -export -in '{{ remote_fullchain_path }}' -inkey '{{ remote_privkey_path }}' -out '{{ remote_plex_pkcs_path }}' -name "cert" -passout '{{ plex_pkcs_pass }}'
+  - name: Modify ownership of PKCS12 archive
+    command:
+       chown '{{ alt_process_owner }}' '{{ remote_plex_pkcs_path }}'
+
+# Task 8: Copy certificates to PRTG directory 
+- hosts: '{{ prtg_hosts }}'
+  tasks:
+   - name: Copy privkey to PRTG folder
+     win_copy:
+        src: '{{ local_privkey_path }}'
+        dest: '{{ prtg_privkey_path }}'
+   - name: Copy cert to PRTG folder
+     win_copy:
+        src: '{{ local_cert_path }}'
+        dest: '{{ prtg_cert_path }}'
+
+# Task 9: Copy certificates to Ansible Tower directory 
+- hosts: localhost
+  connection: local
+  tasks:
+   - name: Move and rename privkey to tower directory
+     command:
+        ln -fsv '{{ local_privkey_path }}' '{{ ansible_privkey_path }}'
+   - name: Move and rename cert to tower directory
+     command:
+        ln -fsv '{{ local_cert_path }}' '{{ ansible_cert_path }}'
+
+# Task 10: Modify permissions and copy certificates to OpenVPN folder
+- hosts: '{{ openvpn_hosts }}'
+  become: yes
+
+  tasks:
+   - name: Move and rename privkey to SABnzbd directory
+     command:
+        cp -rLf '{{ remote_privkey_path }}' '{{ openvpn_privkey_path }}'
+   - name: Move and rename cert to SABnzbd directory
+     command:
+        cp -rLf '{{ remote_cert_path }}' '{{ openvpn_cert_path }}'

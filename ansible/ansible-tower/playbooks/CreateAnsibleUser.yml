@@ -11,7 +11,9 @@
       force: yes
 
   - name: Placing key
-    authorized_key: '{{ auth_key }}'
+    authorized_key: 
+      user: '{{ insert_username }}' 
+      key: '{{ auth_key }}'
 
   - lineinfile: '{{ ubuntu_insert_user }}' 
 
@@ -26,7 +28,9 @@
       force: yes
 
   - name: Placing key
-    authorized_key: '{{ auth_key }}'
+    authorized_key: 
+      user: '{{ insert_username }}' 
+      key: '{{ auth_key }}'
 
   - lineinfile: '{{ freebsd_insert_user }}' 
 

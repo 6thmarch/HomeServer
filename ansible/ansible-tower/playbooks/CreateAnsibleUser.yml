@@ -3,8 +3,9 @@
   become: yes
   tasks:
 
-  - user: 
-    name: '{{ ubuntu_insert_user }}' 
+  - name: Creating user for ubuntu hosts
+    user: 
+      name: '{{ ubuntu_insert_user }}' 
 
   - name: Placing key
     authorized_key: '{{ auth_key }}'
@@ -14,9 +15,9 @@
 - hosts: '{{ remote_freenas }}'
   become: yes
   tasks:
-
-  - user: 
-    name: '{{ freebsd_insert_user }}' 
+  - name: Creating user for FreeNAS hosts
+    user: 
+      name: '{{ freebsd_insert_user }}' 
 
   - name: Placing key
     authorized_key: '{{ auth_key }}'

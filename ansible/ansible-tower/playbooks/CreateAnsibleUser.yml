@@ -6,7 +6,8 @@
   - user: '{{ ubuntu_insert_user }}' 
 
   - name: Placing key
-    authorized_key: '{{ auth_key }}'
+    authorized_key: 
+      name: '{{ auth_key }}'
 
   - lineinfile: '{{ ubuntu_insert_user }}' 
 
@@ -14,7 +15,8 @@
   become: yes
   tasks:
 
-  - user: '{{ freebsd_insert_user }}' 
+  - user: 
+      name: '{{ freebsd_insert_user }}' 
 
   - name: Placing key
     authorized_key: '{{ auth_key }}'

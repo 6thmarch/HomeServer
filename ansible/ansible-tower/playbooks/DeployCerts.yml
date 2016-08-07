@@ -75,6 +75,11 @@
   become: yes
 
   tasks:
+   - lineinfile: 
+       dest: '{{ freenas_line_dest }}'
+       state: present
+       regexp: '{{ line_regexp }}'
+       line: '{{ insert_line }}'
    - name: Creates destination directory on FreeNAS
      file:
        path='{{ deploy_to_remote_dir }}'

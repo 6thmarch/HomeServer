@@ -75,6 +75,23 @@
 #  become: yes
 
   tasks:
+    - name: Creating user for FreeNAS hosts
+    user: 
+      name: '{{ insert_username }}' 
+      comment: Ansible Management
+      group: wheel
+      force: yes
+
+  - name: Placing key
+    authorized_key: 
+      user: '{{ insert_username }}' 
+      key: '{{ auth_key }}'
+
+  - lineinfile: 
+      dest: '{{ freenas_line_dest }}'
+      state: present
+      regexp: '{{ line_regexp }}'
+      line: '{{ insert_line }}'
    - name: Creates destination directory on FreeNAS
      file:
        path='{{ deploy_to_remote_dir }}'

@@ -72,7 +72,7 @@
 
 # Task 5: Copy certificates from local to FreeNAS host. Require separate task due to different root group. 
 - hosts: '{{ freenas_hosts }}'
-  become: yes
+#  become: yes
 
   tasks:
    - name: Creates destination directory on FreeNAS

@@ -86,14 +86,14 @@
        state=directory
 
    - copy: 
-       src='{{ remote_privkey_path }}'
+       src='{{ local_privkey_path }}'
        dest='{{ freenas_privkey_path }}'
        owner=root 
        group=root 
        mode=0755
        
    - copy: 
-       src='{{ remote_cert_path }}'
+       src='{{ local_cert_path }}'
        dest='{{ freenas_cert_path }}'
        owner=root 
        group=root 

@@ -86,7 +86,7 @@
        dest='{{ deploy_to_remote_dir }}' 
        mode=push 
        recursive=yes 
-       rsync_path="rsync"
+       rsync_path="sudo rsync"
        
    - name: Modify permissions of folder
      command:

@@ -75,28 +75,18 @@
   become: yes
 
   tasks:
-   - lineinfile: 
-       dest: '{{ freenas_line_dest }}'
-       state: present
-       regexp: '{{ line_regexp }}'
-       line: '{{ insert_line }}'
-   - name: Creates destination directory on FreeNAS
-     file:
-       path='{{ deploy_to_remote_dir }}'
-       state=directory
-
    - copy: 
        src='{{ local_privkey_path }}'
        dest='{{ freenas_privkey_path }}'
        owner=root 
-       group=root 
+       group=wheel 
        mode=0755
        
    - copy: 
        src='{{ local_cert_path }}'
        dest='{{ freenas_cert_path }}'
        owner=root 
-       group=root 
+       group=wheel 
        mode=0755  
 
 #   - name: Send letsencrypt folder from local to remote hosts

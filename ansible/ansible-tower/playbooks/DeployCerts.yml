@@ -85,25 +85,39 @@
        path='{{ deploy_to_remote_dir }}'
        state=directory
 
-   - name: Send letsencrypt folder from local to remote hosts
-     synchronize:  
-       src='{{ from_local_dir }}' 
-       dest='{{ deploy_to_remote_dir }}' 
-       mode=push 
-       recursive=yes 
-       rsync_path="sudo rsync"
+   - copy: 
+       src='{{ remote_privkey_path }}'
+       dest='{{ freenas_privkey_path }}'
+       owner=root 
+       group=root 
+       mode=0755
        
-   - name: Modify permissions of folder
-     command:
-       chmod -R 0755 '{{ deploy_to_remote_dir }}'  
-  
-   - name: Move privkey to FreeNAS certificates directory
-     command:
-        cp -rLf '{{ remote_privkey_path }}' '{{ freenas_privkey_path }}'
+   - copy: 
+       src='{{ remote_cert_path }}'
+       dest='{{ freenas_cert_path }}'
+       owner=root 
+       group=root 
+       mode=0755  
 
-   - name: Move fullchain to FreeNAS certificates directory
-     command:
-        cp -rLf '{{ remote_cert_path }}' '{{ freenas_fullchain_path }}'
+#   - name: Send letsencrypt folder from local to remote hosts
+#     synchronize:  
+#       src='{{ from_local_dir }}' 
+#       dest='{{ deploy_to_remote_dir }}' 
+#       mode=push 
+#       recursive=yes 
+#       rsync_path="sudo rsync"
+       
+#   - name: Modify permissions of folder
+#     command:
+#       chmod -R 0755 '{{ deploy_to_remote_dir }}'  
+  
+#   - name: Move privkey to FreeNAS certificates directory
+#     command:
+#        cp -rLf '{{ remote_privkey_path }}' '{{ freenas_privkey_path }}'
+
+#   - name: Move fullchain to FreeNAS certificates directory
+#     command:
+#        cp -rLf '{{ remote_cert_path }}' '{{ freenas_fullchain_path }}'
 
 # Task 6: Modify permissions and copy certificates to SABnzbd folder
 - hosts: '{{ downloadstation_hosts }}'

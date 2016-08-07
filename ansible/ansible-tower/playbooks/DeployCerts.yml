@@ -98,7 +98,7 @@
 
    - name: Move fullchain to FreeNAS certificates directory
      command:
-        cp -rLf '{{ remote_fullchain_path }}' '{{ freenas_fullchain_path }}'
+        cp -rLf '{{ remote_cert_path }}' '{{ freenas_fullchain_path }}'
 
 # Task 6: Modify permissions and copy certificates to SABnzbd folder
 - hosts: '{{ downloadstation_hosts }}'

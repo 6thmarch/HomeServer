@@ -8,6 +8,7 @@ acl "trusted" {
 };
 options {
 	directory "/var/cache/bind";
+        max-cache-size 10M;
 	querylog yes;
 	recursion yes; #enable recursive queries
 	allow-recursion { trusted; };  # allows recursive queries from "trusted" clients

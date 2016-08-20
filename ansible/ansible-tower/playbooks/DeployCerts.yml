@@ -83,7 +83,7 @@
        mode=0755
        
    - copy: 
-       src='{{ local_cert_path }}'
+       src='{{ local_fullchain_path }}'
        dest='{{ freenas_cert_path }}'
        owner=root 
        group=wheel 
